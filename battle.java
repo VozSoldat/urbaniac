@@ -1,22 +1,26 @@
 import java.util.Random;
+import java.util.Scanner;
 public class battle {
+
+
+
     static boolean isWin = true;
+    static Scanner sc = new Scanner(System.in);
     static Random rand = new Random();
     public static void main(String[] args) {
-        weapons pedang = new weapons();
-        pedang.name = "Broom";
+;
 
         chara john = new chara();
             john.hp  = 20;
-            john.atkBonus = ActualToChanceMachine(DiceMachine());
+            john.atkBonus = ActualToChanceMachine(die20());
             john.armorClass = ActualToChanceMachine(12);
 
-            john.str = ActualToChanceMachine(DiceMachine());
-            john.dex = ActualToChanceMachine(DiceMachine());
-            john.con = ActualToChanceMachine(DiceMachine());
-            john.inte = ActualToChanceMachine(DiceMachine());
-            john.wis = ActualToChanceMachine(DiceMachine());
-            john.cha = ActualToChanceMachine(DiceMachine());
+            john.str = ActualToChanceMachine(die20());
+            john.dex = ActualToChanceMachine(die20());
+            john.con = ActualToChanceMachine(die20());
+            john.inte = ActualToChanceMachine(die20());
+            john.wis = ActualToChanceMachine(die20());
+            john.cha = ActualToChanceMachine(die20());
 
 
         CharacterAbility(john.str, john.dex, john.con, john.inte, john.wis, john.cha, john.hp);
@@ -25,24 +29,26 @@ public class battle {
         System.out.println("A goblin appears before you.");
         chara goblin = new chara();
             goblin.hp  = 9;
-            goblin.atkBonus = ActualToChanceMachine(DiceMachine());
+            goblin.atkBonus = ActualToChanceMachine(die20());
             goblin.armorClass = ActualToChanceMachine(12);
 
-            goblin.str = ActualToChanceMachine(DiceMachine());
-            goblin.dex = ActualToChanceMachine(DiceMachine());
-            goblin.con = ActualToChanceMachine(DiceMachine());
-            goblin.inte = ActualToChanceMachine(DiceMachine());
-            goblin.wis = ActualToChanceMachine(DiceMachine());
-            goblin.cha = ActualToChanceMachine(DiceMachine());
+            goblin.str = ActualToChanceMachine(die20());
+            goblin.dex = ActualToChanceMachine(die20());
+            goblin.con = ActualToChanceMachine(die20());
+            goblin.inte = ActualToChanceMachine(die20());
+            goblin.wis = ActualToChanceMachine(die20());
+            goblin.cha = ActualToChanceMachine(die20());
 
         CharacterAbility(goblin.str, goblin.dex, goblin.con, goblin.inte, goblin.wis, goblin.cha, goblin.hp);
 
 
         // roll initiative
-        int initA = DiceMachine() + john.initBonus;
+        System.out.println("===\nROLLING INITIATIVE\n===");
+
+        int initA = die20() + john.initBonus;
         System.out.println("Your initiative is " + initA);
 
-        int initB = DiceMachine() + goblin.initBonus;
+        int initB = die20() + goblin.initBonus;
         System.out.println("Goblin's initiative is "+initB);
 
         if (initA>initB) {
@@ -62,7 +68,11 @@ public class battle {
     }
 
     public static void PlayerFight(int atk, int def, int atk1, int def1){
-         if (atk+rand.nextInt(1,20)>def1+rand.nextInt(1,20)) {
+        int weapId = ChooseWeap();
+        int weapStats[] = pedang.main(weapId);
+        System.out.println("===\nYOU ARE ATTACKING\n===");
+
+         if (weapStats[0] + die20() > def1+die20()) {
             System.out.println("You succesfully land an attack.");
             isWin = true;
         }else{
@@ -72,6 +82,8 @@ public class battle {
     }
     
     public static void EnemyFight(int atk, int def, int atk1, int def1){
+        System.out.println("===\nENEMY IS ATTACKING\n===");
+
         if (atk1+rand.nextInt(1,20)>def+rand.nextInt(1,20)) {
             System.out.println("Goblin lands a blow.");
             isWin=false;
@@ -92,8 +104,36 @@ public class battle {
         return;
     }
 
-    public static int DiceMachine(){
+    public static int die20(){
         int diceResult = rand.nextInt(1,20);
         return diceResult;
     }
+
+    public static int die6(){
+        int diceResult = rand.nextInt(1,6);
+        return diceResult;
+    }
+
+    public static int ChooseWeap(){
+        System.out.println("Choose your weapon.");
+        System.out.println("1. Pedang\n2. Kapak");
+        int input = sc.nextInt();
+        int weapId=0;
+
+        switch (input) {
+            case 1:
+                weapId = 4;
+                break;
+
+            case 2:
+                weapId = 2;
+                break;
+
+            default:
+                break;
+        }
+
+        return weapId;
+    }
+    
 }
